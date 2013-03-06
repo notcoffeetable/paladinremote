@@ -1,0 +1,26 @@
+body {
+    background-color: #111;
+    font-family: Georgia, serif;
+    color: #DDD;
+}
+
+#header_span {
+    width: 100%;
+}
+
+#header_div {
+/*    height: 150px; */
+    width: 100%
+}
+
+#player_wrapper {
+    margin: 0px auto;
+}
+
+#lowPlayer_wrapper,#medPlayer_wrapper,#highPlayer_wrapper{
+ float:left;
+}
+
+#medPlayer_wrapper,#highPlayer_wrapper {
+ margin-left:20px;
+}
