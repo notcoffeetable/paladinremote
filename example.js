@@ -1,3 +1,10 @@
+/*
+* This document is a refactoring in progress.
+*
+*Copyright 2012. Paladin Innovators LLC. All rights reserved.
+*
+*/
+
 var http = require('http');
 var fs = require('fs');
 http.createServer(function (req, res) {

@@ -1,3 +1,8 @@
+/*
+* Initial working but messy server code.
+*
+* Copyright 2012. Paladin Innovators LLC. All rights reserved.
+*/
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
