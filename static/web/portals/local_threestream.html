@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Local Quality Comparison</title>
+ <script type="text/javascript" src="jwplayer.js" ></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+<span id="header_span">
+  <div id="header_div">
+    <h1>Paladin Three Stream Local Portal</h1>
+  </div>
+</span>
+<div id="player_wrapper">
+  <div id="lowPlayer"></div>
+  <div id="medPlayer"></div>
+  <div id="highPlayer"></div>
+</div>
+
+
+
+<script type="text/javascript">
+  var server = "rtmp://" + window.location.hostname + "/live/";
+  jwplayer("lowPlayer").setup({
+    file: server + "demolow",
+    subscribe: true,
+    height: 240,
+    width: 320
+  });
+  jwplayer("medPlayer").setup({
+    file: server + "demomed",
+    subscribe: true,
+    height: 240,
+    width: 320
+  });
+  jwplayer("highPlayer").setup({
+    file: server + "demohigh",
+    subscribe: true,
+    height: 240,
+    width: 320
+  });
+</script>
+</body>
+
+</html>
