@@ -1,5 +1,5 @@
 //This document is a refactoring in progress.
-//Copyright 2012. Paladin Innovators LLC. All rights reserved.
+//Copyright 2013. Paladin Innovators LLC. All rights reserved.
 
 //Setup dependencies
 var mdns = require('mdns');
