@@ -1,5 +1,5 @@
 //This document is a refactoring in progress.
-//Copyright 2013. Paladin Innovators LLC. All rights reserved.
+//*Copyright 2013. Paladin Innovators LLC. All rights reserved.*
 
 //Setup dependencies
 var mdns = require('mdns');
@@ -24,6 +24,11 @@ app.use(express.logger('dev'));
 
 //Serve static content.
 app.use(express.static(__dirname + '/static', {maxAge: lifetime}));
+
+//Calls meant for `wirecast`.
+app.use('/wirecast', function(req, res, next){
+    console.log('call to wirecast!!!');
+});
 
 //Listening on port 1337.
 app.listen(1337);
