@@ -16,12 +16,13 @@
           for (var i=0;i<data.length;i++)
           { 
               $('#shots').append($('<button/>', {
-                  onclick: "$.ajax('wirecast/changeShotIndex?i=" + (i + 1) + "')",
+                  onclick: "$.ajax({type:'POST', url: 'wirecast/changeShotIndex?i=" + (i + 1) + "'})",
                   html:data[i]
               }))}
       }
       $(function() {
-        $.ajax('wirecast/shotnames').done(function(data) {
+        $.ajax({type: 'GET',
+               url: 'wirecast/shotnames'}).done(function(data) {
           //data.shift();
            createButtons(data);
         });
@@ -49,7 +50,7 @@
 <div class="section">
   <div class="sec_head">Record</div>
   <button class="start"
-  onclick="$.ajax('wirecast/startRecord')">Start</button> 
+  onclick="$.ajax(type:'POST', url: 'wirecast/startRecord')">Start</button> 
 <button class="stop" onclick="$.ajax('wirecast/stopRecord')">Stop</button>
 </div>
 

@@ -28,7 +28,7 @@
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <p>This document is a refactoring in progress.
-Copyright 2012. Paladin Innovators LLC. All rights reserved.</p>
+<em>Copyright 2013. Paladin Innovators LLC. All rights reserved.</em></p>
 
             </div>
             
@@ -80,18 +80,12 @@ var lifetime = 0;
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               
-<p>Setup Bonjour advertisement</p>
+<p>Kinda obvious.... pass -v for verbose logging</p>
 
             </div>
             
-            <div class="content"><div class="highlight"><pre>var advertiseServer = mdns.createAdvertisement(mdns.tcp(&#x27;paladin-remote&#x27;), 1337, function(err, service){
-    if(err) {
-        console.log(&#x27;ERROR:&#x27;, err);
-    }else{
-        console.log(service);
-    }
-});
-advertiseServer.start();
+            <div class="content"><div class="highlight"><pre>if (process.argv.indexOf(&quot;-v&quot;) &gt;= 2)
+    app.use(express.logger(&#x27;dev&#x27;));
 
 </pre></div></div>
             
@@ -105,11 +99,18 @@ advertiseServer.start();
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               
-<p>Kinda obvious....</p>
+<p>Setup Bonjour advertisement.. need a better solution for this.</p>
 
             </div>
             
-            <div class="content"><div class="highlight"><pre>app.use(express.logger(&#x27;dev&#x27;));
+            <div class="content"><div class="highlight"><pre>var advertiseServer = mdns.createAdvertisement(mdns.tcp(&#x27;paladin-remote&#x27;), 1337, function(err, service){
+    if(err) {
+        console.log(&#x27;ERROR:&#x27;, err);
+    }else{
+        console.log(service);
+    }
+});
+advertiseServer.start();
 
 </pre></div></div>
             
@@ -141,11 +142,86 @@ advertiseServer.start();
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               
+<p>Calls meant for <code>wirecast</code>. This section should be made into a
+seperate module.</p>
+
+            </div>
+            
+            <div class="content"><div class="highlight"><pre>app.use(&#x27;&#x2F;wirecast&#x27;, function(req, res, next){
+    console.log(req.path);
+    console.log(req.query);
+    var sys = require(&#x27;sys&#x27;)
+    var exec = require(&#x27;child_process&#x27;).exec;
+    var child;
+    var params = cleanAjaxQuery(req.query, true);
+
+    console.log(params);
+
+    child = exec(&quot;perl .&#x2F;wirecast&quot; + req.path + &quot;.pl&quot; + params, function (error, stdout, stderr) {
+        var perlResponse = stdout.split(&quot;\n&quot;);
+        if(perlResponse.length &gt; 1) {
+            res.send(perlResponse);
+        }else{
+            console.log(perlResponse);
+            res.send(500);
+        }
+        if (error !== null) {
+            console.log(&#x27;exec error: &#x27; + error);
+        }
+    });
+    
+});
+
+</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              
 <p>Listening on port 1337.</p>
 
             </div>
             
             <div class="content"><div class="highlight"><pre>app.listen(1337);
+
+</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              
+<p>_ is used by jQuery to hack IE caching, not a value you
+care about passing to perl. This function cleans that out. If
+paramterizeString is true, returns parameters seperated by &quot; &quot;.</p>
+
+            </div>
+            
+            <div class="content"><div class="highlight"><pre>function cleanAjaxQuery(ajaxQuery, parameterizeString) {
+    parameterizeString = typeof parameterizeString !== &#x27;undefined&#x27; ? parameterizeString : false;
+    var cleanQuery = parameterizeString ? &quot;&quot; : {} ;
+    for (p in ajaxQuery) {
+        if(&quot;_&quot; == p)
+            continue;
+        if(parameterizeString) {
+            cleanQuery += &quot; &quot; + ajaxQuery[p];
+            continue;
+        }
+        cleanQuery[p] = ajaxQuery[p];
+    }
+    return cleanQuery;
+}
 
 </pre></div></div>
             

@@ -10,4 +10,10 @@ Dependencies
 - Express
 - mdns
 
+How to Use/Install
+----------
+- Clone repo
+- `cd paladinremote && npm install`
+- `node server.js [-v]`)
+
 *Copyright 2013. Paladin Innovators LLC. All rights reserved.*
