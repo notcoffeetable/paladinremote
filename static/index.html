@@ -22,7 +22,7 @@
       }
       $(function() {
         $.ajax({type: 'GET',
-               url: 'wirecast/shotnames'}).done(function(data) {
+                url: 'wirecast/shotnames'}).done(function(data) {
           //data.shift();
            createButtons(data);
         });
