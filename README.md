@@ -9,6 +9,7 @@ Dependencies
 ------------
 - Express
 - mdns
+- win32ole
 
 Requirements
 ------------
