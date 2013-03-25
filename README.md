@@ -39,4 +39,11 @@ Make sure Telestream Wirecast is running, currently shots are only recognized in
 
 In your browser go to `localhost:1337`
 
+Test
+----
+Tests use [NodeUnit](https://github.com/caolan/nodeunit)
+
+      npm install nodeunit
+      nodeunit test
+
 *Copyright 2013. Paladin Innovators LLC. All rights reserved.*

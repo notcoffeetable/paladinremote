@@ -1,0 +1,14 @@
+{
+    "DocumentByIndex": "Requires 1-indexed integer argument. Returns Document object",
+    "Document": {
+        "Broadcast": "Accepts 'start' and 'stop', starts and stops broadcasting of parent Document",
+        "IsBroadcasting": "Returns 1 or 0 depending on if current Document is Broadcasting",
+        "ArchiveToDisk": "Accepts 'start' and 'stop', starts and stops recordinging of parent Document",
+        "IsArchivingToDisk": "Returns 1 or 0 depending on if current Document is recording",
+        "LayerByIndex": "Requires 1-indexed integer argument. Returns Layer object",
+        "Layer": {
+            
+        }
+    }
+
+}
