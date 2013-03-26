@@ -9,18 +9,19 @@
 //     console.log('**Error caught***\n' + e);
 // }
 
-exports.shotnames = function(document, layer){
+exports.shotNames = function(document, layer){
 //function shotnames(document, layer) {
     try {
         var shotcount = layer.ShotCount;
         var shots = {}
         for(var i = 1; i <= shotcount; i++) {
-            shots[i] = document.ShotByShotID(layer.ShotIDByIndex(i)).Name;
+            shots[i] = "";
+            shots[i] += document.ShotByShotID(layer.ShotIDByIndex(i)).Name;
             //console.log("shot " + i + ":", document.ShotByShotID(layer.ShotIDByIndex(i)).Name);
         }
     }catch(e){
-        console.log('**Error caught***\n' + e);
+        console.log('**Error caught in shotnames.js***\n' + e);
     }
-    console.log(shots);
+//    console.log(shots);
     return shots;
 }

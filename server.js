@@ -5,7 +5,7 @@
 var mdns = require('mdns');
 var express = require('express');
 var win32ole = require('win32ole');
-var wirecast = require('./wirecast/changeshotindex');
+var wirecast = require('./wirecast');
 
 //Setup important properties
 var app = express();
@@ -15,8 +15,10 @@ var lifetime = 0;
 if (process.argv.indexOf("-v") >= 2)
     app.use(express.logger('dev'));
 
-//shot changing through import
+//Messy wirecast start up stuff will eventually be consolidated in the
+//appropriate module.
 try {
+    var changeshotindex = require('./wirecast')
     //Should be passed in
     var docID = 1;
     var shotIndex = 2;
@@ -26,6 +28,7 @@ try {
     var document = wirecastObj.DocumentByIndex(docID);
     var layer = document.LayerByName('Normal');
     wirecast.changeShotIndex(layer, shotIndex);
+    wirecast.broadcast(document, false);
 } catch(e) {
     console.log("Error: ", e)
 }
@@ -46,28 +49,45 @@ app.use(express.static(__dirname + '/static', {maxAge: lifetime}));
 //Calls meant for `wirecast`. This section should be made into a
 //seperate javascript module.
 app.use('/wirecast', function(req, res, next){
-    console.log(req.path);
-    console.log(req.query);
-    var sys = require('sys')
-    var exec = require('child_process').exec;
-    var child;
-    var params = cleanAjaxQuery(req.query, true);
+     var params = cleanAjaxQuery(req.query);
+     //console.log("params:", params);
 
-    console.log(params);
+    //quick and dirty replacement of perl with js
+    switch(req.path) {
+        // returns object with shot indexes and names as
+        // property/value pairs in the form 
+        //`{'1': 'shot1 name', '2': 'shot2 name'}`
+    case "/shotnames":
+        res.send(wirecast.shotnames(document,layer));
+        break;
 
-    child = exec("perl ./wirecast" + req.path + ".pl" + params, function (error, stdout, stderr) {
-        var perlResponse = stdout.split("\n");
-        if(perlResponse.length > 1) {
-            res.send(perlResponse);
+    case "/broadcast":
+        if(wirecast.broadcast(document, ('true' == params.start))) {
+            res.send(200);
         }else{
-            console.log(perlResponse);
             res.send(500);
         }
-        if (error !== null) {
-            console.log('exec error: ' + error);
+        break;
+        
+    case "/record":
+        if(wirecast.record(document, ('true' == params.start))) {
+            res.send(200);
+        }else{
+            res.send(500);
         }
-    });
-    
+        break;
+        
+    case "/changeshotindex":
+        if(wirecast.changeShotIndex(layer, params['shotIndex'])){
+            res.send(200);
+        }else{
+            res.send(500)
+        }
+        break;
+    default:
+        res.send(404);
+        break;
+    }
 });
 
 //Listening on port 1337.
